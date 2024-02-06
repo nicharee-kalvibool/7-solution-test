@@ -30,6 +30,10 @@
 }
 
 .head {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     color: #000;
     font-size: large;
     width: 100%;
@@ -38,4 +42,23 @@
     padding: 10px;
     text-align: center;
     margin-bottom: 10px;
+    height: 100%;
+    cursor: pointer;
+}
+
+.disabled {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #000;
+    font-size: large;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 10px;
+    height: 100%;
+    cursor: not-allowed;
 }

@@ -1,77 +1,35 @@
-import Image from "next/image";
+"use client";
 import styles from "./styles/page.module.css";
+import { useRouter } from "next/navigation";
 
-type DataList = {
-    type: string;
-    name: string;
-};
-
-const DEFAULT_DATA: DataList[] = [
-    {
-        type: "Fruit",
-        name: "Apple",
-    },
-    {
-        type: "Vegetable",
-        name: "Broccoli",
-    },
-    {
-        type: "Vegetable",
-        name: "Mushroom",
-    },
-    {
-        type: "Fruit",
-        name: "Banana",
-    },
-    {
-        type: "Vegetable",
-        name: "Tomato",
-    },
-    {
-        type: "Fruit",
-        name: "Orange",
-    },
-    {
-        type: "Fruit",
-        name: "Mango",
-    },
-    {
-        type: "Fruit",
-        name: "Pineapple",
-    },
-    {
-        type: "Vegetable",
-        name: "Cucumber",
-    },
-    {
-        type: "Fruit",
-        name: "Watermelon",
-    },
-    {
-        type: "Vegetable",
-        name: "Carrot",
-    },
-];
-export default function Home() {
+const Home = () => {
+    const router = useRouter();
     return (
         <main className={styles.main}>
             <div className={styles.description}>
                 <div className={styles.block}>
                     <div className={styles.listBox}>
-                        <div className={styles.head}>All</div>
+                        <div
+                            className={styles.head}
+                            onClick={() => router.push("/1-to-do")}
+                        >
+                            <h3>Section 1</h3>
+                            <h1>TO-DO List</h1>
+                        </div>
                     </div>
                 </div>
                 <div className={styles.block}>
                     <div className={styles.listBox}>
-                        <div className={styles.head}>Fruit</div>
-                    </div>
-                </div>
-                <div className={styles.block}>
-                    <div className={styles.listBox}>
-                        <div className={styles.head}>Vegetable</div>
+                        <div
+                            className={styles.disabled}
+                        >
+                            Empty
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
     );
-}
+};
+
+export default Home;
