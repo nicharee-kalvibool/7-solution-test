@@ -58,8 +58,12 @@ export const DEFAULT_DATA: DataList[] = [
     },
 ];
 export type TodoContextType = {
-    data: AllDataList;
-    setAllData: React.Dispatch<React.SetStateAction<AllDataList>>;
+    all_data: DataList[];
+    fruit_data: DataList[];
+    vegetable_data: DataList[];
+    setAllData: React.Dispatch<React.SetStateAction<DataList[]>>;
+    setFruitData: React.Dispatch<React.SetStateAction<DataList[]>>;
+    setVegetableData: React.Dispatch<React.SetStateAction<DataList[]>>;
 };
 
 export const TodoContext = createContext<TodoContextType>(null!);

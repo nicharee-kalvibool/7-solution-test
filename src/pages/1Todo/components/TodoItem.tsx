@@ -1,79 +1,74 @@
 import { AllDataList, DataList, TodoContext } from "@/contexts/TodoContext";
 import styles from "@/pages/1Todo/styles/TodoItem.module.css";
-import { useCallback, useContext, useEffect, useRef } from "react";
+import { ButtonHTMLAttributes, LegacyRef, useCallback, useContext, useEffect, useRef, useState } from "react";
 
 type TodoItemProps = {
-    index: number;
     name: string;
     type: string;
     onClick?: Function;
     autoRemove?: boolean;
 };
 
-const TodoItem = ({ index, name, type, onClick, autoRemove }: TodoItemProps) => {
-    const autoRemoveRef = useRef<NodeJS.Timeout>();
+const TodoItem = ({ name, type, onClick, autoRemove }: TodoItemProps) => {
+    const buttonRef = useRef(null);
+    const { setAllData, setFruitData, setVegetableData } = useContext(TodoContext);
 
-    const { data, setAllData } = useContext(TodoContext);
-
-    const handleClickRemoveItem = (type: string, index: number) => {
+    const handleClickRemoveItem = useCallback(() => {
         let remove_item: DataList = {
-            type,
             name,
+            type,
         };
         if (type == "Vegetable") {
-            setAllData((state: AllDataList) => {
-                const temp_new_data: DataList[] = [...state.vegetable_data];
-                temp_new_data.splice(index, 1);
-                return {
-                    ...state,
-                    all_data: [...state.all_data, remove_item],
-                    vegetable_data: temp_new_data,
-                };
+            setVegetableData((state: DataList[]) => {
+                const _state: DataList[] = [...state];
+                let _index = _state.findIndex((item) => item.name === name);
+                console.log(_index);
+                _state.splice(_index, 1);
+                return _state;
             });
         } else if (type == "Fruit") {
-            setAllData((state: AllDataList) => {
-                const temp_new_data: DataList[] = [...state.fruit_data];
-                temp_new_data.splice(index, 1);
-                return {
-                    ...state,
-                    all_data: [...state.all_data, remove_item],
-                    fruit_data: temp_new_data,
-                };
+            setFruitData((state: DataList[]) => {
+                const _state: DataList[] = [...state];
+                let _index = _state.findIndex((item) => item.name === name);
+                console.log(_index);
+                _state.splice(_index, 1);
+                return _state;
             });
         }
-    };
-
-    const setAutoRemove = useCallback(() => {
-        autoRemoveRef.current = setInterval(() => {
-            handleClickRemoveItem(type, index);
-        }, 5000);
-    }, [data]);
+        setAllData((state: DataList[]) => {
+            return [...state, remove_item];
+        });
+    }, [name]);
 
     useEffect(() => {
+        let timer: NodeJS.Timeout;
         if (autoRemove) {
-            setAutoRemove();
+            timer = setTimeout(() => {
+                if (buttonRef.current) {
+                    let taget = buttonRef.current as HTMLButtonElement;
+                    taget?.click();
+                }
+            }, 5000);
         }
         return () => {
-            if (autoRemoveRef.current) {
-                clearInterval(autoRemoveRef.current);
-            }
+            clearTimeout(timer);
         };
-    }, []);
+    }, [name]);
 
     return (
-        <div
-            id={`${type}-${name}`}
+        <button
+            ref={buttonRef}
             className={styles.item}
             onClick={() => {
                 if (typeof onClick == "function") {
                     onClick();
                 } else if (autoRemove) {
-                    handleClickRemoveItem(type, index);
+                    handleClickRemoveItem();
                 }
             }}
         >
             {name}
-        </div>
+        </button>
     );
 };
 
